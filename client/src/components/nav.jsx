@@ -1,9 +1,9 @@
 import logo from "./logo.jpg";
 import { Link } from "react-router-dom";
 import "./css1.css";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Avatar } from "@mui/material";
 import { Button } from "@mui/material";
-import { login } from "./bb.js";
+// import { login } from "./bb.js";
 import {  useState } from "react";
 import TextField from "@mui/material/TextField";
 //import { Allblogs} from './allblog.jsx';
@@ -20,45 +20,34 @@ const but={
     color:'black',
     margin:'10px 20px 10px 20px',
    marginLeft: 'auto',
-    borderRadius:'20px'
+    borderRadius:'15px',
+    fontSize:'12px'
 }
 
 export function Nav() {
-  const{cat,onsearch}=useContext(blogcontext);
+  const{cat,onsearch,profile,setprofile,setblog}=useContext(blogcontext);
   let navigate = useNavigate();
   //const[cat,setcat]=useState([]);
-  const [sign, setsign] = useState(login.status);
+  // const status=localStorage.getItem('status');
+  // console.log(profile.role);
+  // const [login,setlogin]=useState(status);
+  
   let handlesign = () => {
-    if (sign) {
-      localStorage.removeItem("name");
-      localStorage.removeItem("role");
-      setsign(false);
-      navigate("/", { replace: true });
+    
+    if (profile) {
+      // Clear all user data from storage
+      sessionStorage.removeItem("user");
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      // Clear profile and blog state
+      setprofile(null);
+      setblog([]);
+      navigate("/");
     } else {
-      setsign(true);
+      // Logic handled by Link to /sign
     }
 };
-// let k;
-// <blogcontext.Provider value={k}>
-//    <Allblogs/>
-// </blogcontext.Provider>
-  let name = localStorage.getItem("name");
-  // // let role = localStorage.getItem("role");
-  // let handlesearch = (e, newevent) => {
-  //  k = cat.filter(blog=>blog.catogery===newevent);
-  //   // 
-  //  navigate(`/allblogs/${k}`);
-  // };
-  // useEffect(()=>{
-  //     axios.get('http://localhost:4002/api/nav').then((res)=>{
-  //   if (Array.isArray(res.data.data))
-  //   setcat(res.data.data)
-  // }).catch((err)=>{
-  //   console.log(err);
-  // })
-  // },[])
 
- // let v = login.filter(i=>i.name===name)
  let handle=(event,value)=>{
   onsearch(event,value);
   navigate(`/allblogs`);
@@ -82,6 +71,7 @@ export function Nav() {
             fontFamily: "Ubuntu",
             height: "35px",
             marginLeft:'10px',
+            bottom:'1px',
             backgroundColor: "white",
             borderRadius: "10px",
             "& .MuiOutlinedInput-root": {
@@ -93,13 +83,27 @@ export function Nav() {
             },
           }}
           onChange={handle}
-          renderInput={(params) => <TextField {...params} label="Search"/>}
+          renderInput={(params) => <TextField {...params}/>}
           className="tex" />
-       <h1 style={{margin:'10px 20px 10px 20px',color:'white'}} className="tex">{name ? <p>Hi,  {name}</p> : ""}</h1>
-        {/* <h1 style={{margin:'10px',color:'white'}} className="tex">{role === "Blogger" ? <Link to="/blogger" style={{textDecoration:'none',color:'white'}}>Edit Post</Link> : ""}</h1> */}
-        {/* <h1 style={{margin:'10px',color:'white'}} className="tex">{role === "Blogger" ? <Link to="/newpost" style={{textDecoration:'none',color:'white'}}>New Post</Link> : ""}</h1> */}
-        <Link to="/sign"><Button onClick={handlesign} style={but} className="tex">
-            {sign ? "Logout" : "Sign In"}</Button></Link>
+        {profile?<Avatar sx={{ margin: '20px',
+          height: '30px',
+          width: '30px',
+          borderRadius: '100%',  
+          objectFit: 'fill',
+          border: '3px solid rgb(15, 15, 15)'}}/>:" "}
+       {profile && (
+         <>
+         {/* <h1 style={{margin:'10px 20px 10px 20px',color:'white'}} className="tex">{profile?.name}</h1> */}
+         <h1 style={{margin:'10px',color:'white'}} className="tex"><Link to="/profile" style={{textDecoration:'none',color:'white'}}>{profile?.name}</Link></h1>
+         {profile?.role === "Blogger" && (
+           <h1 style={{margin:'10px',color:'white'}} className="tex"><Link to="/newpost" style={{textDecoration:'none',color:'white'}}>New Post</Link></h1>
+         )}
+         </>
+       )}
+        <div style={{marginLeft:'15px'}}>
+        <Link to={profile?"/":"/sign"}><Button onClick={handlesign} style={but} className="tex">
+            {profile ? "Logout" : "Sign In"}</Button></Link>
+        <Link to="/createuser">{!profile?<Button style={but} className="tex">Register</Button>:<a/>}</Link></div>
       </div>
       </div>
       <style>

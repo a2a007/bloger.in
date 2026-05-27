@@ -15,7 +15,18 @@ const expand = {
       const data = await newblogmodel.findOne({ id: id });
 
       console.log('Blog found:', data);
-      res.send(data);
+
+      if (!data) {
+        return res.status(404).send('Blog not found');
+      }
+
+      // Ensure likes array exists
+      const sanitizedData = {
+          ...data.toObject(),
+          likes: data.likes || []
+      };
+
+      res.send(sanitizedData);
     } catch (err) {
       console.log('Error:', err);
       res.status(500).send('Server error');

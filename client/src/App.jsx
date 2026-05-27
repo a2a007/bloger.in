@@ -1,4 +1,5 @@
 import { Nav } from './components/nav';
+import { Profile } from './components/profile.jsx';
 import { createContext,useEffect,useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import {Sign} from './components/sign.jsx';
@@ -17,6 +18,7 @@ export const blogcontext=createContext();
 function App() {
   const [cat,setcat]=useState([]);
   const[blog,setblog]=useState([]);
+  const[profile,setprofile]=useState(null);
   useEffect(()=>{
   axios.get('http://localhost:4002/api/nav').then((res)=>{
     if (Array.isArray(res.data.data)){
@@ -26,6 +28,10 @@ function App() {
   }).catch((err)=>{
     console.log(err);
   })
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser) {
+      setprofile(JSON.parse(storedUser));
+    }
   },[]);
       //const navigate=useNavigate();
 
@@ -38,7 +44,7 @@ catogary===value);
   }
   return (
   <>
-      <blogcontext.Provider value={{cat,setcat,blog,setblog,onsearch:handlesearch}}>
+      <blogcontext.Provider value={{cat,setcat,blog,setblog,profile,setprofile,onsearch:handlesearch}}>
      
       <ScrollToTop/>
       <Nav />
@@ -49,8 +55,9 @@ catogary===value);
         <Route path="/sign" element={<Sign />}/>
         <Route path="/newpost" element={<Newblog/>}></Route>
         <Route path='/createuser' element={<Create/>}></Route>
-        <Route path='/blogger/:x' element={<Blogger/>}></Route>
+        <Route path='/blogger' element={<Blogger/>}></Route>
         <Route path='/blog/:i' element={<Blogs/>}></Route>
+        <Route path='/profile' element={<Profile/>}></Route>
         </Routes>
         <Footer/>
         </blogcontext.Provider>

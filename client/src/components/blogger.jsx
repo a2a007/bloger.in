@@ -1,4 +1,4 @@
-import {data,login} from './bb';
+// import {data,login} from './bb';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
@@ -7,9 +7,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import {Typography} from '@mui/material';
 import {Avatar} from '@mui/material';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useContext} from 'react';
+import { blogcontext } from "../App.jsx";
 const paperstyle={
   width:'auto',
   height:'130px', 
@@ -75,10 +79,20 @@ const pro={
   backgroundColor:'#EAEAEA',
 }
 export function Blogger() {
-  let {x} = useParams();
-  let y = data.filter(blog=>blog.author===x);
-  let u= login.filter(i=>i.name===x)
-  return (
+  // let {x} = useParams();
+  const[data,setdata]=useState([]);
+  useEffect(()=>{
+    axios.get('http://localhost:4002/api/blogger').then((res)=>{
+      setdata(res.data)
+    }).catch((err) => console.log(err));
+  },[]);
+  const {profile}=useContext(blogcontext);
+  if(profile==null)
+  alert('please login');
+console.log(data);
+ const y = data.filter(blogs=>profile.email!=blogs.email);
+  console.log(y);
+  return(
     <>
     <div style={pro}>
     <Avatar sx={{ margin: '20px',
@@ -87,7 +101,7 @@ export function Blogger() {
   borderRadius: '100%',  
   objectFit: 'fill', 
   border: '3px solid rgb(15, 15, 15)'}} className='avatar'  alt="Profile" src={y[0]?.avatar}/>
-    <div><Typography style={n}>{u[0].username}</Typography><Link to="/newpost" style={{textDecoration:'none',color:'white'}}>
+    <div><Typography style={n}>{profile.name}</Typography><Link to="/newpost" style={{textDecoration:'none',color:'white'}}>
     <Button className='icon' style={button}><AddIcon/>New Post</Button></Link></div>
     </div>
      <div style={div}>
@@ -95,19 +109,30 @@ export function Blogger() {
           <div key={blog.id}>
             <Grid  container style={css}>
               <Grid item xs={2} align='center'>
-            <Box style={paperstyle}><img src={blog.img} style={im} alt='img' /></Box>
+            <Box style={paperstyle}><img src={blog.file} style={im} alt='img' /></Box>
             </Grid>
            <Grid item xs={8}>
-            <Box style={paperstyle} >
+            <Box style={paperstyle}>
             <Typography variant="h6" style={{ fontSize: '10px', }}/>
               <h3 style={{ fontSize: '20px', margin: '6px 0', marginLeft:'10px',fontStyle:'bold' }}>{blog.topic}</h3>
-              <h5 style={{ fontSize: '14px', margin: '6px 0',marginLeft:'13px' }}>{blog.catogery}</h5>
-              <p style={{ fontSize: '14px', margin: '6px 0',marginLeft:'10px' }}>{blog.decript}</p>
+              <h5 style={{ fontSize: '14px', margin: '6px 0',marginLeft:'13px' }}>{blog.catogary}</h5>
+              <p style={{ fontSize: '14px', margin: '6px 0',marginLeft:'10px' }}>{blog.description
+}</p>
             </Box>
           </Grid>
           <Grid item xs={2} style={buttonContainerStyle} >
             {/* <Button className='icon'><EditIcon style={but}/></Button> */}
-            <Button className='icon'  onClick={()=>{console.log(blog.id + 'Deleted');alert(blog.catogery + ' Deleted Successfully')}}><DeleteIcon style={but}/></Button>
+            <Button className='icon'  onClick={() => {
+                if(window.confirm("Are you sure you want to delete this blog?")) {
+                  axios.delete(`http://localhost:4002/api/deleteblog/${blog.id}`)
+                    .then(() => {
+                      alert("Blog Deleted Successfully");
+                      // Update local state to remove the deleted blog
+                      setdata(data.filter(item => item.id !== blog.id));
+                    })
+                    .catch(err => console.log(err));
+                }
+            }}><DeleteIcon style={but}/></Button>
               <Button className='icon' onClick={()=>{console.log(blog.id + ' Added to bookmark');alert(blog.catogery + ' Added to bookmark')}}>
                 <BookmarkBorderIcon style={but}/>
               </Button>

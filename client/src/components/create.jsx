@@ -70,27 +70,33 @@ export function Create() {
     else if (!pass || !confirm) setError("Enter password to continue");
     else if (!(pass === confirm)) setError("Password Mistmatches");
     else if (!passwordRegex.test(pass))
-      setError("The pasword must contain 8 character and symbols");
+      setError("The pasword must contain A uupercase Letter with 8 character and symbols");
     else
-    setError('');
-
-    //userdetails send to backend
-    try {
+    {
+      setError('');
+       try {
       const res = await axios.post("http://localhost:4002/api/newdata", data);
       console.log("added data successfully");
+      console.log(res.data);
       getresponse(res.data);
       setverify(resposnse);
+      navigate("/sign");
+      
     } catch (err) {
       console.log(err.message);
     }
     console.log(resposnse);
+    }
+    
+
+    //userdetails send to backend
+   
 
   };
   React.useEffect(()=>{
-    if(resposnse==='user stored successfully'){
+    if(resposnse==='user stored'){
       setError("");
-      if (role === "Reader") setTimeout(() => navigate("/home"), 2000);
-      else if (role === "Blogger") setTimeout(() => navigate("/blogger"));
+      navigate("/");
     }
   },[resposnse,role,navigate])
   return (

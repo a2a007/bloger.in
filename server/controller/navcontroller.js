@@ -13,9 +13,12 @@ const display={
          if (!data) {
             return res.status(200).json({ message: 'No user exists' ,data:false});
          }
-        
+        const sanitizedData = data.map(blog => ({
+            ...blog,
+            likes: blog.likes || []
+        }));
         console.log('sent data');
-     res.status(200).json({data});
+     res.status(200).json({data: sanitizedData});
     }
     catch(err){
         console.log(err)

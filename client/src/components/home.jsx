@@ -1,4 +1,5 @@
- //import {data} from './bb';
+import { useContext, useEffect, useState } from 'react';
+import { blogcontext } from "../App.jsx";
 import Paper from '@mui/material/Paper';
 import {Link} from "react-router-dom";
 import Box from '@mui/material/Box';
@@ -15,14 +16,12 @@ import {
   WhatsappIcon,
   FacebookShareCount,
 } from "react-share";
-import { useEffect, useState } from 'react';
+
 const paperstyle={
   fontFamily:'Ubuntu',
   width:'auto',
   height:'240px', 
-  //backgroundColor:'#F2EFE7',
   backgroundColor:'#727D73',
-  //color:'#697565',
   padding:"20px",
   fontSize:'10px',
   color:'aliceblue',
@@ -42,7 +41,6 @@ const but={
 const css={
   padding:'10px 10px 10px 10px',
    backgroundColor:'#F2EFE7',
-  //backgroundColor:'#F0F0D7'
 }
 const boxcss={
   fontFamily:'Ubuntu',
@@ -77,10 +75,6 @@ const im={
   marginTop:'10px',
   marginLeft:'4px'
 }
-// let likecount=[
-//   {id:1,
-//   count:2}
-// ]
 const spacing={
   margin:'10px 0px',
   fontSize:'25px',
@@ -103,24 +97,48 @@ const date={
   fontSize:'10px',
   fontStyle:'italic'
 }
+
 export function Home() {
   const [blogs,setblogs]=useState([]);
+  const { profile } = useContext(blogcontext);
+
   useEffect(() => {
     axios.get('http://localhost:4002/api/allblogs')
     .then((res) => {
-      if (Array.isArray(res.data.data)) {  // Check if data is an array
-        setblogs(res.data.data);
+      if (Array.isArray(res.data.data)) {
+        // Ensure likes is an array
+        const sanitizedBlogs = res.data.data.map(b => ({
+            ...b,
+            likes: b.likes || []
+        }));
+        setblogs(sanitizedBlogs);
     } else {
-        console.log("Expected an array but got:", res.data);
         setblogs([]);
     }})
     .catch((err) => {
-      console.log('notfound');
-      console.log(err);
+      console.log('notfound', err);
     });
 }, []);
 
-  let [like,likecount]  = useState();
+  const handleLike = (id, e) => {
+    e.preventDefault();
+    if (!profile) {
+        alert("Please login to like!");
+        return;
+    }
+    axios.post('http://localhost:4002/api/like', { id: id, email: profile.email })
+    .then((res) => {
+       // Update local state
+       setblogs(prevBlogs => prevBlogs.map(blog => {
+           if (blog.id === id) {
+               return { ...blog, likes: res.data.likes };
+           }
+           return blog;
+       }));
+    })
+    .catch(err => console.log(err));
+  }
+
   return (
     <>
     <div style={css} key={0}>
@@ -131,7 +149,7 @@ export function Home() {
           Your first blog posts won`t be perfect, but you just have to do it. You
           have to start somewhere - Shane Barker
         </p>
-        <Button  size="sm" style={but} component={Link} to={'/createuser'} className='button'>
+        <Button  size="sm" style={but} component={Link} to={(profile && profile.role=="Blogger"?'/newpost':'/createuser')} className='button'>
          Get started
         </Button>
         </div>
@@ -140,7 +158,6 @@ export function Home() {
     <div>
       <Paper >
         {blogs.map((blog)=>(
-          like=blog.like,
           <div key={blog.id} >
             <Grid  container style={css}>
               <Grid item xs={4} align='center' borderRadius={'2px'}>
@@ -154,14 +171,21 @@ export function Home() {
               <p style={spacing2}>{blog.description}</p>
               <div style={button}>
               <Button component={Link}  to={`/blog/${blog.id}`}style={but} className='button'>Read more</Button>
-              <Button  sx={{color:'white'}} style={fill} className='icon' onClick={()=>{likecount(blog.like++)}}><FavoriteBorderSharpIcon/>{like}</Button>
+              
+              <Button sx={{color:'white'}} style={fill} className='icon' onClick={(e)=>handleLike(blog.id, e)}>
+                  {profile && blog.likes && blog.likes.includes(profile.email) ? 
+                    <FavoriteBorderSharpIcon style={{color:'red'}}/> : 
+                    <FavoriteBorderSharpIcon/>
+                  }
+                  {blog.likes ? blog.likes.length : 0}
+              </Button>
+
               <FacebookShareButton networkName="Facebook" url={window.location.href} className='icon'>
                 <FacebookIcon  style={fill} size={40} />
-                
               </FacebookShareButton>
               <FacebookShareCount url={window.location.href}>
-  {(shareCount) => <span className="myShareCountWrapper">{shareCount}</span>}
-</FacebookShareCount>
+                {(shareCount) => <span className="myShareCountWrapper">{shareCount}</span>}
+              </FacebookShareCount>
               <TwitterShareButton networkName="Twitter" url={window.location.href} className='icon'>
                 <TwitterIcon style={fill} size={40} />
               </TwitterShareButton>

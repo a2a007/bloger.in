@@ -12,6 +12,7 @@ const blog=require('./controller/blogcontroller')
 const home=require('./controller/homecontroller')
 const filter=require('./controller/allblogcontroller')
 const search=require('./controller/navcontroller')
+const blogger=require('./controller/bloggercontroller');
 app.get('/',(req,res)=>{
     res.send('Backend server');
 })
@@ -37,6 +38,10 @@ router.get('/fetchuser/:email',registercheck.fetch)
 router.post('/newblog',blog.newblog)
 router.get('/allblogs',home.fetch)
 router.post('/blog',filter.expand)
+router.get('/blogger',blogger.blogs);
+router.post('/like', blog.like);
+router.get('/liked-posts/:email', blog.fetchLiked);
+// router.delete('/deleteblog/:id', blog.deleteBlog);
 app.use('/api',router);
 
 

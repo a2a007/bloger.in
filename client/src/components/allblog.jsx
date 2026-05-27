@@ -3,9 +3,10 @@ import Grid from '@mui/material/Grid';
 //import {data} from './bb';
 import { Link} from 'react-router-dom';
 import { Button } from '@mui/material';
-//import axios from 'axios';
+import axios from 'axios';
 import { useContext} from 'react';
 import { blogcontext } from "../App.jsx";
+import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 
 const paperStyle={
   backgroundColor:'#F2EFE7',
@@ -59,17 +60,29 @@ const des={
   lineHeight:'1.2',
   margin:'10px 10px 10px 10px'
 }
+
 export  function Allblogs() {
-  //let {i} = useParams();
-//   const[data,setdata]=useState([]);
-//   useEffect(()=>{
-//     axios.get("http://localhost:4002/api/nav").then((res)=>{setdata(res.data.data)}).catch((err)=>console.log(err))
-// },[])
-  //let k = data.filter(blog=>blog.catogery===i);
-  const {blog}=useContext(blogcontext);
-  console.log(blog);
-  // if(!k)
-  //  return (<h2>No such blog exist</h2>)
+  const {blog, profile, setblog} = useContext(blogcontext); // Ensure setblog is available from context
+  
+  const handleLike = (id, e) => {
+    e.preventDefault(); // Prevent Link navigation
+    if (!profile) {
+        alert("Please login to like!");
+        return;
+    }
+    axios.post('http://localhost:4002/api/like', { id: id, email: profile.email })
+    .then((res) => {
+       // Update global context state
+       setblog(prevBlogs => prevBlogs.map(b => {
+           if (b.id === id) {
+               return { ...b, likes: res.data.likes };
+           }
+           return b;
+       }));
+    })
+    .catch(err => console.log(err));
+  }
+
   return ( 
      <>
      {blog.map(j => (
@@ -81,7 +94,14 @@ export  function Allblogs() {
           <h3 style={des}>{j.decript}</h3>
           <img src={j.file}  style={img} alt='img' />
           <br/>
-          <Button component={Link}  to={`/blog/${j.id}`}style={but} className='button'>Read more</Button>
+           <div style={{display:'flex', alignItems:'center'}}>
+              <Button component={Link}  to={`/blog/${j.id}`}style={but} className='button'>Read more</Button>
+               {profile && j.likes && j.likes.includes(profile.email) ? 
+                 <FavoriteBorderSharpIcon style={{color: 'red', cursor:'pointer'}} onClick={(e) => handleLike(j.id, e)}/> : 
+                 <FavoriteBorderSharpIcon style={{cursor:'pointer'}} onClick={(e) => handleLike(j.id, e)}/> 
+               }
+               <span style={{marginLeft:'5px'}}>{j.likes ? j.likes.length : 0}</span>
+           </div>
           </div>
         </Paper>
       </Grid>

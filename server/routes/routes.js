@@ -15,4 +15,6 @@ router.get('/fetchuser/:email',registercheck.fetch)
 router.post('/newblog',blog.newblog)
 router.get('/allblogs',home.fetch)
 router.post('/filterblog',expand.expand)
+router.post('/like', blog.like);
+router.get('/liked-posts/:email', blog.fetchLiked);
 app.use('/api',router);

@@ -11,18 +11,11 @@ const home={
             console.log('entered server fetch')
             const data= await newblogmodel.find();
             console.log('fetched data');
-            const blogsdata = data.map(blog => ({
-                _id: blog._id,
-                topic: blog.topic,
-                category: blog.catogary,
-                description: blog.description,
-                content: blog.content,
-                date: blog.date,
-                file: blog.file
-                ? `http://localhost:4002/api/image/${blog._id}` // Correctly serve image
-                : null
-        }))
-            res.status(200).json({data});
+            const sanitizedData = data.map(blog => ({
+                ...blog.toObject(),
+                likes: blog.likes || []
+            }));
+            res.status(200).json({data: sanitizedData});
         }
         catch(err){
             console.log('error from fetch')

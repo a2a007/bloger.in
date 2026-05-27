@@ -45,7 +45,7 @@ const registercheck={
 fetch:async (req,res)=>{
     try{
         console.log('entered server fetch')
-        const email=req.params.email;90
+        const email=req.params.email;
         const data= await newusermodel.findOne({email:email});
         if(!data)
            { res.status(200).json({message:'No user exists'});

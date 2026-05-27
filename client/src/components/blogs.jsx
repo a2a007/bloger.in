@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { blogcontext } from "../App.jsx";
 import { useParams } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -70,8 +71,13 @@ const styles = {
   }
 };
 
+
+
+// ... (keep styles)
+
 export function Blogs() {
   const { i } = useParams();
+  const { profile } = useContext(blogcontext);
   const [blog, setBlog] = useState(null);
   const [like, setLike] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -81,16 +87,28 @@ export function Blogs() {
       .then((res) => {
         const blogData = res.data;
         setBlog(blogData);
-        setLike(blogData.like || 0);
+        // Check if user has liked
+        const likes = blogData.likes || [];
+        setLike(likes.length);
+        if (profile && likes.includes(profile.email)) {
+            setLiked(true);
+        }
       })
       .catch((err) => console.log(err));
-  }, [i]);
+  }, [i, profile]); // Re-run if profile loads late
 
   const handleLike = () => {
-    if (!liked) {
-      setLike(like + 1);
-      setLiked(true);
+    if (!profile) {
+        alert("Please login to like!");
+        return;
     }
+    
+    axios.post('http://localhost:4002/api/like', {id: i, email: profile.email})
+        .then((res) => {
+            setLiked(res.data.isLiked);
+            setLike(res.data.likes.length);
+        })
+        .catch(err => console.log(err));
   };
 
   if (!blog) return <p>Loading...</p>;
@@ -119,7 +137,7 @@ export function Blogs() {
                 <WhatsappIcon size={40} />
               </WhatsappShareButton>
               <Button onClick={handleLike}>
-                <FavoriteBorderSharpIcon /> {like}
+                {liked ? <FavoriteBorderSharpIcon style={{color: 'red'}} /> : <FavoriteBorderSharpIcon />} {like}
               </Button>
             </div>
           </div>

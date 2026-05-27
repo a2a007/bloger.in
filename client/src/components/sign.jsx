@@ -8,6 +8,8 @@ import { useEffect } from "react";
 //import { login } from "./bb";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useContext } from "react";
+import { blogcontext } from "../App.jsx";
 const paperStyle = {
   height: "auto",
   width: "350px",
@@ -47,12 +49,15 @@ const lay = {
   margin: "60px 90px 20px 90px",
 };
 export function Sign() {
+    const{setprofile}=useContext(blogcontext);
+  
   const navigate = useNavigate();
   const [name, setName] = React.useState("");
   const [pass, setpass] = React.useState("");
   const [serverres, setserverres] = React.useState("");
   const [namerole, setnamerole] = React.useState('');
   const [verify, setverify] = React.useState(null);
+  // localStorage.setItem("status",false);
   const ob = {
     email: name,
     password: pass,
@@ -72,9 +77,12 @@ export function Sign() {
           axios
             .get(`${url}/fetchuser/${name}`)
             .then((res) => {
+              sessionStorage.setItem('user', JSON.stringify(res.data.data)); // Store full user object
+              // console.log(status);
+              setprofile(res.data.data);
               console.log(res.data.data);
               setnamerole(res.data.data);
-               console.log(namerole);
+              console.log(namerole);
             })
             .catch((err) => {
               console.log(err);
@@ -93,13 +101,14 @@ export function Sign() {
   // 
   useEffect(() => {
     if (verify && namerole) {
+
       if (namerole.role === "Reader") {
         console.log('Navigating to home page'); 
         navigate(`/`)
       }
        else { 
         console.log('Navigating to blogger page'); 
-        navigate(`/blogger/${namerole.email}`)
+        navigate(`/blogger`)
       };
     }
   }, [namerole, navigate,verify]);
@@ -107,6 +116,7 @@ export function Sign() {
   let alertMessage = null;
   if (serverres) {
     if (verify) {
+
       alertMessage = <Alert severity="success">{serverres}</Alert>;
     } else {
       alertMessage = <Alert severity="warning">{serverres}</Alert>;
