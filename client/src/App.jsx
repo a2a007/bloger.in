@@ -2,6 +2,7 @@ import { Nav } from './components/nav';
 import { Profile } from './components/profile.jsx';
 import { createContext,useEffect,useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Snackbar, Alert } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 import {Sign} from './components/sign.jsx';
 import { Allblogs} from './components/allblog.jsx';
@@ -21,6 +22,15 @@ function App() {
   const[blog,setblog]=useState([]);
   const[profile,setprofile]=useState(null);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('info');
+
+  const showAlert = (message, severity = 'info') => {
+    setAlertMsg(message);
+    setAlertSeverity(severity);
+    setAlertOpen(true);
+  };
 
   const muiTheme = createTheme({
     palette: {
@@ -79,10 +89,15 @@ catogary===value);
   }
   return (
   <>
-      <blogcontext.Provider value={{cat,setcat,blog,setblog,profile,setprofile,onsearch:handlesearch,theme,toggleTheme}}>
+      <blogcontext.Provider value={{cat,setcat,blog,setblog,profile,setprofile,onsearch:handlesearch,theme,toggleTheme,showAlert}}>
       <ThemeProvider theme={muiTheme}>
       <ScrollToTop/>
       <Nav />
+      <Snackbar open={alertOpen} autoHideDuration={4000} onClose={() => setAlertOpen(false)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} variant="filled" sx={{ width: '100%' }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
       <Routes>
         <Route path='/about' element={<About/>}/>
         <Route path="/" element={<Home/>}/>

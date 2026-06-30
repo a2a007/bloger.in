@@ -64,12 +64,12 @@ const des={
 }
 
 export  function Allblogs() {
-  const {blog, profile, setblog} = useContext(blogcontext); // Ensure setblog is available from context
+  const {blog, profile, setblog, showAlert} = useContext(blogcontext); // Ensure setblog is available from context
   
   const handleLike = (id, e) => {
     e.preventDefault(); // Prevent Link navigation
     if (!profile) {
-        alert("Please login to like!");
+        showAlert("Please login to like!", "warning");
         return;
     }
     axios.post('http://localhost:4002/api/like', { id: id, email: profile.email })

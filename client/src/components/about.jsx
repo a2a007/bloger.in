@@ -14,8 +14,8 @@ const imag={
     height:'70%',
     width:'70%',
     margin:'20px',
-    borderRadius:'20px'
-    // boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)'
+    borderRadius:'20px',
+    boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)'
 }
 const heading={
     fontFamily:'Alex Brush',
@@ -33,6 +33,7 @@ const text={
     paddingBottom:'10px'
 }
 const box={
+   backgroundColor:'var(--bg-color-main)', 
     marginBottom:'0px'
 }
 const sty={
@@ -51,7 +52,7 @@ export  function About() {
                     <Grid item xs={12} md={6}>
                     <h1 style={heading}>About us</h1>
                     <div className="animate__animated animate__slideInUp">
-                    <p style={text}>We are the brave hunters, always searching for We are the brave hunters, always searching for the latest updates and uncovering hidden truths that the world deserves to know. Our relentless pursuit of knowledge fuels our passion for discovery, ensuring that no stone is left unturned and no story remains untold.
+                    <p style={text}>We are the brave hunters, always searching for the latest updates and uncovering hidden truths that the world deserves to know. Our relentless pursuit of knowledge fuels our passion for discovery, ensuring that no stone is left unturned and no story remains untold.
 
 With every post, we quench the thirst of curious minds and satisfy the hunger of passionate writers eager to share their voices. Whether it’s breaking news, insightful analysis, or thought-provoking narratives, we strive to ignite conversations that inspire, inform, and challenge perspectives.
 

@@ -114,7 +114,7 @@ const date={
 
 export function Home() {
   const [blogs,setblogs]=useState([]);
-  const { profile } = useContext(blogcontext);
+  const { profile, showAlert } = useContext(blogcontext);
 
   useEffect(() => {
     axios.get('http://localhost:4002/api/allblogs')
@@ -137,7 +137,7 @@ export function Home() {
   const handleLike = (id, e) => {
     e.preventDefault();
     if (!profile) {
-        alert("Please login to like!");
+        showAlert("Please login to like!", "warning");
         return;
     }
     axios.post('http://localhost:4002/api/like', { id: id, email: profile.email })

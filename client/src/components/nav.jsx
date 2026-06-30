@@ -64,10 +64,10 @@ export function Nav() {
     <div className="navbar">
       <div className="logo">
         <a href="/about">
-          <img alt="Img" src={logo} />
+          <img alt="Img" style={{boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)'}}  src={logo} />
         </a>
       </div>
-      <div className="nag">
+      <div className="nag" style={{boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)'}}>
       <h1 className="tex" style={{margin:'10px'}}>
         <Link to="/" style={getLinkStyle("/")}>Home</Link>
       </h1>
@@ -100,11 +100,11 @@ export function Nav() {
           <h1 style={{margin:'10px'}} className="tex">
             <Link to="/profile" style={getLinkStyle("/profile")}>{profile?.name}</Link>
           </h1>
-          {profile?.role === "Blogger" && (
+          {/* {profile?.role === "Blogger" && (
             <h1 style={{margin:'10px'}} className="tex">
               <Link to="/newpost" style={getLinkStyle("/newpost")}>New Post</Link>
             </h1>
-          )}
+          )} */}
           {profile?.role === "Blogger" && (
             <h1 style={{margin:'10px'}} className="tex">
               <Link to="/blogger" style={getLinkStyle("/blogger")}>Posts</Link>

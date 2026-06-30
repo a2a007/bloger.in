@@ -85,7 +85,7 @@ const pro={
 export function Blogger() {
   // let {x} = useParams();
   const[data,setdata]=useState([]);
-  const {profile}=useContext(blogcontext);
+  const {profile, showAlert}=useContext(blogcontext);
   const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(()=>{
@@ -108,10 +108,10 @@ export function Blogger() {
     let updated;
     if (bookmarks.includes(blogId)) {
       updated = bookmarks.filter(id => id !== blogId);
-      alert("Post removed from bookmarks!");
+      showAlert("Post removed from bookmarks!", "info");
     } else {
       updated = [...bookmarks, blogId];
-      alert(catogary + ' Added to bookmark');
+      showAlert(catogary + ' Added to bookmark', "success");
     }
     setBookmarks(updated);
     localStorage.setItem(`bookmarks_${profile.email}`, JSON.stringify(updated));
@@ -144,18 +144,21 @@ export function Blogger() {
 
     axios.put(`http://localhost:4002/api/updateblog/${editingBlog.id}`, updatedData)
       .then((res) => {
-        alert("Blog updated successfully!");
+        showAlert("Blog updated successfully!", "success");
         setdata(prevData => prevData.map(item => item.id === editingBlog.id ? res.data.blog : item));
         setEditingBlog(null);
       })
       .catch(err => {
         console.error(err);
-        alert("Failed to update blog");
+        showAlert("Failed to update blog", "error");
       });
   };
 
-  if(profile==null)
-  alert('please login');
+  useEffect(() => {
+    if (profile === null) {
+      showAlert("Please login!", "warning");
+    }
+  }, [profile]);
 console.log(data);
  const y = data.filter(blogs=>profile.email!=blogs.email);
   console.log(y);
@@ -206,7 +209,7 @@ console.log(data);
                 if(window.confirm("Are you sure you want to delete this blog?")) {
                   axios.delete(`http://localhost:4002/api/deleteblog/${blog.id}`)
                     .then(() => {
-                      alert("Blog Deleted Successfully");
+                      showAlert("Blog Deleted Successfully", "success");
                       // Update local state to remove the deleted blog
                       setdata(data.filter(item => item.id !== blog.id));
                     })

@@ -10,21 +10,23 @@
   --btn-bg: #ECCE6D;
   --btn-text: #1B4B4D;
   --color-secondary: #727D73;
+  --bg-color-form-card: #ffffff;
   --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode {
   --bg-color-main: #121212;
-  --bg-color-card: #404940;
+  --bg-color-card: #1e1e1e;
   --bg-color-card-profile: #1e1e1e;
-  --bg-color-navbar: ##1e1e1e;
-  --bg-color-nav-container: #404940;
+  --bg-color-navbar: #121212;
+  --bg-color-nav-container: #222522;
   --text-color-main: #f5f5f5;
   --text-color-card: #f5f5f5;
   --text-color-muted: #b0b0b0;
   --btn-bg: #ECCE6D;
-  --btn-text: #121212;
-  --color-secondary: #727D73;
+  --btn-text: #1B4B4D;
+  --color-secondary: #ECCE6D;
+  --bg-color-form-card: #1e1e1e;
   --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 

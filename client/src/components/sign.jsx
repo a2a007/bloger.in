@@ -14,15 +14,13 @@ const paperStyle = {
   height: "auto",
   width: "350px",
   padding: "10px 10px 10px 10px",
-  margin: "auto",
-  marginTop: "40px",
-  marginBottom: "40px",
+  margin: "60px 90px 40px 130px",
   display: "flex",
   gap: 27,
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "var(--bg-color-main)",
+  backgroundColor: "var(--bg-color-form-card)",
   color: "var(--text-color-main)",
   transition: "background-color 0.3s ease, color 0.3s ease"
 };
@@ -33,8 +31,8 @@ const nw = {
   marginBottom: "20px",
 };
 const button = {
-  backgroundColor: "var(--bg-color-card)",
-  color: "var(--text-color-card)",
+  backgroundColor: "var(--text-color-muted)",
+  color: "var(--bg-color-navbar)",
   marginLeft: "30px",
   marginRight: "30px",
   marginBottom: "10px",
@@ -50,7 +48,8 @@ const lay = {
   width: "70%",
   maxwidth: "420px",
   borderRadius: "30px",
-  margin: "60px 90px 20px 90px",
+  margin: "60px 90px 20px 130px",
+  boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.2)'
 };
 export function Sign() {
     const{setprofile}=useContext(blogcontext);
@@ -143,7 +142,7 @@ export function Sign() {
           align="center"
           className="animate__animated animate__backInUp"
         >
-          <h1 style={{ fontFamily: "Great Vibes" }}>SignIn </h1>
+          <h1 style={{ fontFamily: "Great Vibes", margin:"60px 90px 20px 130px" }}>SignIn </h1>
           <Paper elevation={2} style={paperStyle}>
             <div>
               {/* {
@@ -186,7 +185,7 @@ export function Sign() {
                 <Button type="submit" variant="contained" style={button}>
                   <Link
                     to="/createuser"
-                    style={{ textDecoration: "none", color: "white" }}
+                    style={{ textDecoration: "none", color: "var(--bg-color-navbar)" }}
                   >
                     New user
                   </Link>

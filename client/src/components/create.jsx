@@ -32,13 +32,13 @@ const ly = {
   marginRight: "195px",
   marginTop: "30px",
   marginBottom: "30px",
-  backgroundColor: "var(--bg-color-card)",
-  color: "var(--text-color-card)",
+  backgroundColor: "var(--text-color-muted)",
+  color: "var(--bg-color-navbar)",
   transition: "background-color 0.3s ease, color 0.3s ease"
 };
 const paperout = {
   marginBottom: "50px",
-  backgroundColor: "var(--bg-color-main)",
+  backgroundColor: "var(--bg-color-form-card)",
   color: "var(--text-color-main)",
   transition: "background-color 0.3s ease, color 0.3s ease"
 };

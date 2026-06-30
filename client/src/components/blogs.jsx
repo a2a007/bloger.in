@@ -78,7 +78,7 @@ const styles = {
 
 export function Blogs() {
   const { i } = useParams();
-  const { profile } = useContext(blogcontext);
+  const { profile, showAlert } = useContext(blogcontext);
   const [blog, setBlog] = useState(null);
   const [like, setLike] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -100,7 +100,7 @@ export function Blogs() {
 
   const handleLike = () => {
     if (!profile) {
-        alert("Please login to like!");
+        showAlert("Please login to like!", "warning");
         return;
     }
     
