@@ -9,7 +9,7 @@ const home={
     fetch:async (req,res)=>{
         try{
             console.log('entered server fetch')
-            const data= await newblogmodel.find();
+            const data= await newblogmodel.find().sort({ _id: -1 });
             console.log('fetched data');
             const sanitizedData = data.map(blog => ({
                 ...blog.toObject(),

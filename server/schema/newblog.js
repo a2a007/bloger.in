@@ -1,9 +1,5 @@
 const mongoose = require("mongoose");
 
-mongoose
-  .connect("mongodb+srv://adithya_a2a:adithya2244@cluster0.mjjldum.mongodb.net/loginactivities?retryWrites=true&w=majority&appName=Cluster0")
-  .then(() => console.log("mongodb connected sucessfully hi"))
-  .catch((err) => console.log("error:" + err.message));
 const newblog = new mongoose.Schema({
   id: {
     type: Number,

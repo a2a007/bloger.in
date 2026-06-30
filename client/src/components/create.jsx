@@ -32,10 +32,15 @@ const ly = {
   marginRight: "195px",
   marginTop: "30px",
   marginBottom: "30px",
-  backgroundColor: "rgb(55 60 57)",
+  backgroundColor: "var(--bg-color-card)",
+  color: "var(--text-color-card)",
+  transition: "background-color 0.3s ease, color 0.3s ease"
 };
 const paperout = {
   marginBottom: "50px",
+  backgroundColor: "var(--bg-color-main)",
+  color: "var(--text-color-main)",
+  transition: "background-color 0.3s ease, color 0.3s ease"
 };
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 const passwordRegex =

@@ -7,7 +7,8 @@ import{ Grid} from "@mui/material";
 const paperStyle={
     width:'auto',
     height:'auto',
-    backgroundColor:'#F2EFE7'
+    backgroundColor:'var(--bg-color-main)',
+    transition: 'background-color 0.3s ease'
 }
 const imag={
     height:'70%',

@@ -1,7 +1,6 @@
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { TextField, Button, Alert, MenuItem } from '@mui/material';
-import Textarea from '@mui/joy/Textarea';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -15,9 +14,10 @@ const paperStyle = {
   marginTop: "10vh",
   marginBottom: "10vh",
   borderRadius: '20px',
-  backgroundColor: '#F2EFE7',
-  color: 'rgb(55 60 57)',
+  backgroundColor: 'var(--bg-color-main)',
+  color: 'var(--text-color-main)',
   boxSizing: "border-box",
+  transition: 'background-color 0.3s ease, color 0.3s ease'
 };
 
 const inputStyle = {
@@ -65,7 +65,7 @@ export function Newblog() {
     axios.post('http://localhost:4002/api/newblog', data)
     .then((res) => {
       console.log(res.data.data);
-      navigate("/home");
+      navigate("/");
     })
     .catch((err) => console.log("hi jk"+err));
   };
@@ -101,17 +101,21 @@ export function Newblog() {
             <MenuItem value="crime">crime</MenuItem>
             <MenuItem value="others">others</MenuItem>
           </TextField>
-          <Textarea
+          <TextField
+            multiline
             minRows={3}
+            label="Description"
             placeholder="Description"
-            style={{ ...inputStyle, backgroundColor: '#F2EFE7' }}
+            style={inputStyle}
             onChange={(e) => setDescription(e.target.value)}
             required
           />
-          <Textarea 
+          <TextField
+            multiline
             minRows={6}
+            label="Content"
             placeholder="Content"
-            style={{ ...inputStyle, backgroundColor: '#F2EFE7' }}
+            style={inputStyle}
             onChange={(e) => setContent(e.target.value)}
             required
           />
@@ -122,7 +126,7 @@ export function Newblog() {
             onChange={(e) => setFile(e.target.value)}
             required
           />
-          <Button type="submit" variant="contained" endIcon={<SendIcon />} sx={{ backgroundColor: 'rgb(55 60 57)',width:'120px' }}>
+          <Button type="submit" variant="contained" endIcon={<SendIcon />} sx={{ backgroundColor: 'var(--bg-color-card)', color: 'var(--text-color-card)', width:'120px' }}>
             Send
           </Button>
         </form>

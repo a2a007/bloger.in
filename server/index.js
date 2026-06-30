@@ -1,18 +1,34 @@
+const dns = require('dns');
+// Set DNS servers to Google and Cloudflare DNS to resolve SRV querySrv ECONNREFUSED issues
+dns.setServers(['8.8.8.8', '1.1.1.1']);
+
 const express=require('express')
 const cors=require('cors')
+const mongoose = require('mongoose');
 const app=express();
 app.use(express.json());
 app.use(cors());
 const multer = require('multer');
 const router = express.Router();
-app.listen(4002,console.log('Running on host 4002'));
+
+const MONGO_URI = "mongodb+srv://adithya_a2a:adithya2244@cluster0.mjjldum.mongodb.net/demo?retryWrites=true&w=majority&appName=Cluster0";
+
+mongoose.connect(MONGO_URI, {
+    serverSelectionTimeoutMS: 15000,
+    retryWrites: true,
+    w: 'majority'
+})
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch((err) => console.error('MongoDB connection error:', err.message));
+
 const registercheck = require('./controller/logincontroller');
 const register = require('./controller/registercontroller')
 const blog=require('./controller/blogcontroller')
 const home=require('./controller/homecontroller')
 const filter=require('./controller/allblogcontroller')
 const search=require('./controller/navcontroller')
-const blogger=require('./controller/bloggercontroller');
+const blogger=require('./controller/bloggercontroller');  
+const update = require('./controller/updatecontroller');
 app.get('/',(req,res)=>{
     res.send('Backend server');
 })
@@ -41,8 +57,11 @@ router.post('/blog',filter.expand)
 router.get('/blogger',blogger.blogs);
 router.post('/like', blog.like);
 router.get('/liked-posts/:email', blog.fetchLiked);
-// router.delete('/deleteblog/:id', blog.deleteBlog);
+router.delete('/deleteblog/:id', blog.deleteBlog);
+router.put('/updateblog/:id', update.updateBlog);
 app.use('/api',router);
+
+app.listen(4002, () => console.log('Running on host 4002'));
 
 
 //newuserdata

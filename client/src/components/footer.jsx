@@ -3,12 +3,13 @@ import XIcon from "@mui/icons-material/X";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import Grid from "@mui/material/Grid";
 const footerContainer = {
-  backgroundColor:'rgb(55 60 57)',
+  backgroundColor:'var(--bg-color-nav-container)',
   padding: "20px",
   fontSize:'13px',
   fontFamily:'Ubuntu',
-  color:'#F2EFE7',
-  textAlign:'center'
+  color:'var(--text-color-card)',
+  textAlign:'center',
+  transition: 'background-color 0.3s ease, color 0.3s ease'
 };
 const aboutContainer = {
   padding: "8px",

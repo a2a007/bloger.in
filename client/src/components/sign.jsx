@@ -22,7 +22,9 @@ const paperStyle = {
   flexDirection: "column",
   justifyContent: "center",
   alignItems: "center",
-  color: "rgb(55 60 57)",
+  backgroundColor: "var(--bg-color-main)",
+  color: "var(--text-color-main)",
+  transition: "background-color 0.3s ease, color 0.3s ease"
 };
 const nw = {
   display: "flex",
@@ -31,11 +33,13 @@ const nw = {
   marginBottom: "20px",
 };
 const button = {
-  backgroundColor: "rgb(55 60 57)",
+  backgroundColor: "var(--bg-color-card)",
+  color: "var(--text-color-card)",
   marginLeft: "30px",
   marginRight: "30px",
   marginBottom: "10px",
   textDecoration: "none",
+  transition: "background-color 0.3s ease, color 0.3s ease"
 };
 const int = {
   marginTop: "30px",

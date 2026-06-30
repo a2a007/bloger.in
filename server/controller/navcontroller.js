@@ -24,5 +24,6 @@ const display={
         console.log(err)
     }
     }
+    
 }
 module.exports=display;

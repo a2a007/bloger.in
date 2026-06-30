@@ -21,7 +21,8 @@ const styles = {
   container: {
     padding: '20px',
     borderRadius: '8px',
-    backgroundColor: '#F2EFE7'
+    backgroundColor: 'var(--bg-color-main)',
+    transition: 'background-color 0.3s ease'
   },
   heading: {
     textAlign: 'center',
@@ -45,7 +46,7 @@ const styles = {
     marginLeft: '20px',
     marginBottom: '20px',
     fontWeight: 'normal',
-    color: '#555',
+    color: 'var(--text-color-muted)',
   },
   content: {
     fontFamily: 'Montserrat, sans-serif',
@@ -54,7 +55,7 @@ const styles = {
     marginRight: '20px',
     fontSize: '16px',
     lineHeight: '1.6',
-    color: '#555',
+    color: 'var(--text-color-muted)',
     justifyContent: 'center'
   },
   image: {

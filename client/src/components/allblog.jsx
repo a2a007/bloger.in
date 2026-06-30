@@ -9,15 +9,16 @@ import { blogcontext } from "../App.jsx";
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 
 const paperStyle={
-  backgroundColor:'#F2EFE7',
+  backgroundColor:'var(--bg-color-main)',
   fontFamily: 'Montserrat, sans-serif',
   fontWeight: 'normal',
   textAlign:'left',
   margin:'20px 20px 20px 20px',
   padding:'10px 5px 5px 5px',
-  color: '#555',
+  color: 'var(--text-color-main)',
   width:'auto',
-  borderRadius:'10px'
+  borderRadius:'10px',
+  transition: 'background-color 0.3s ease, color 0.3s ease'
 }
 const dv={
   marginTop:'20px',
@@ -45,14 +46,15 @@ const Cards={
 //   lineHeight:'1.4'
 // }
 const but={
-  backgroundColor:'#ECCE6D',
+  backgroundColor:'var(--btn-bg)',
   textDecoration: 'none',
   width:'100px',
   height:'40px',
-  color:'#1B4B4D',
+  color:'var(--btn-text)',
    borderRadius:'8px',
    fontSize:'10px', 
-   margin:'10px 10px 20px 10px'
+   margin:'10px 10px 20px 10px',
+   transition: 'background-color 0.3s ease, color 0.3s ease'
 }
 const des={
   fontSize:'20px',
@@ -91,7 +93,7 @@ export  function Allblogs() {
         <Paper elevation={6} style={paperStyle}>
           <div style={dv} key={j.id}>
           <h2 style={topic}>{j.topic}</h2>
-          <h3 style={des}>{j.decript}</h3>
+          <h3 style={des}>{j.description}</h3>
           <img src={j.file}  style={img} alt='img' />
           <br/>
            <div style={{display:'flex', alignItems:'center'}}>

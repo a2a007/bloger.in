@@ -1,6 +1,7 @@
 import { Nav } from './components/nav';
 import { Profile } from './components/profile.jsx';
 import { createContext,useEffect,useState } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Route, Routes } from 'react-router-dom';
 import {Sign} from './components/sign.jsx';
 import { Allblogs} from './components/allblog.jsx';
@@ -19,6 +20,40 @@ function App() {
   const [cat,setcat]=useState([]);
   const[blog,setblog]=useState([]);
   const[profile,setprofile]=useState(null);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  const muiTheme = createTheme({
+    palette: {
+      mode: theme === 'dark' ? 'dark' : 'light',
+      primary: {
+        main: theme === 'dark' ? '#99BC85' : 'rgb(55 60 57)',
+      },
+      secondary: {
+        main: '#727D73',
+      },
+      background: {
+        default: theme === 'dark' ? '#121212' : '#F2EFE7',
+        paper: theme === 'dark' ? '#1e1e1e' : '#F2EFE7',
+      },
+      text: {
+        primary: theme === 'dark' ? '#f5f5f5' : '#181C14',
+        secondary: theme === 'dark' ? '#b0b0b0' : '#555555',
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
   useEffect(()=>{
   axios.get('http://localhost:4002/api/nav').then((res)=>{
     if (Array.isArray(res.data.data)){
@@ -44,8 +79,8 @@ catogary===value);
   }
   return (
   <>
-      <blogcontext.Provider value={{cat,setcat,blog,setblog,profile,setprofile,onsearch:handlesearch}}>
-     
+      <blogcontext.Provider value={{cat,setcat,blog,setblog,profile,setprofile,onsearch:handlesearch,theme,toggleTheme}}>
+      <ThemeProvider theme={muiTheme}>
       <ScrollToTop/>
       <Nav />
       <Routes>
@@ -60,8 +95,8 @@ catogary===value);
         <Route path='/profile' element={<Profile/>}></Route>
         </Routes>
         <Footer/>
-        </blogcontext.Provider>
-        
+      </ThemeProvider>
+      </blogcontext.Provider>
       </>
   );
 }

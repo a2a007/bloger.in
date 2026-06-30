@@ -143,6 +143,20 @@ const blog={
             console.log(err);
             res.status(500).json({ message: err.message });
         }
+    },
+    deleteBlog: async (req, res) => {
+        try {
+            const blogId = parseInt(req.params.id);
+            console.log("SERVER: Deleting blog with ID:", blogId);
+            const deletedBlog = await newblogmodel.findOneAndDelete({ id: blogId });
+            if (!deletedBlog) {
+                return res.status(404).json({ message: "Blog not found" });
+            }
+            res.status(200).json({ message: "Blog deleted successfully" });
+        } catch (err) {
+            console.error("Error deleting blog:", err);
+            res.status(500).json({ message: err.message });
+        }
     }
     }
     // Toggle Like
