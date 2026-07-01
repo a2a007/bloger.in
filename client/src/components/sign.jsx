@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { blogcontext } from "../App.jsx";
+import { API_URL } from "../config";
 const paperStyle = {
   height: "auto",
   width: "350px",
@@ -65,7 +66,7 @@ export function Sign() {
     email: name,
     password: pass,
   };
-  const url = "http://localhost:4002/api";
+  const url = `${API_URL}/api`;
   const valid = (e) => {
     e.preventDefault();
 

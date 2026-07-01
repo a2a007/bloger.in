@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import { useContext } from 'react';
 import { blogcontext } from "../App.jsx";
+import { API_URL } from "../config";
 const paperStyle = {
   width: 800,
   padding: "30px 20px",
@@ -62,7 +63,7 @@ export function Newblog() {
     }
     console.log(profile);
     //server side code
-    axios.post('http://localhost:4002/api/newblog', data)
+    axios.post(`${API_URL}/api/newblog`, data)
     .then((res) => {
       console.log(res.data.data);
       navigate("/");

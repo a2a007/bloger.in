@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import { Avatar, Button } from '@mui/material';
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 import axios from 'axios';
+import { API_URL } from "../config";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -84,7 +85,7 @@ export function Blogs() {
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    axios.post('http://localhost:4002/api/blog', { id: i })
+    axios.post(`${API_URL}/api/blog`, { id: i })
       .then((res) => {
         const blogData = res.data;
         setBlog(blogData);
@@ -104,7 +105,7 @@ export function Blogs() {
         return;
     }
     
-    axios.post('http://localhost:4002/api/like', {id: i, email: profile.email})
+    axios.post(`${API_URL}/api/like`, {id: i, email: profile.email})
         .then((res) => {
             setLiked(res.data.isLiked);
             setLike(res.data.likes.length);

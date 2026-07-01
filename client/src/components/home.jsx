@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 import { Button } from '@mui/material';
 import axios from 'axios';
+import { API_URL } from "../config";
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -117,7 +118,7 @@ export function Home() {
   const { profile, showAlert } = useContext(blogcontext);
 
   useEffect(() => {
-    axios.get('http://localhost:4002/api/allblogs')
+    axios.get(`${API_URL}/api/allblogs`)
     .then((res) => {
       if (Array.isArray(res.data.data)) {
         // Ensure likes is an array
@@ -140,7 +141,7 @@ export function Home() {
         showAlert("Please login to like!", "warning");
         return;
     }
-    axios.post('http://localhost:4002/api/like', { id: id, email: profile.email })
+    axios.post(`${API_URL}/api/like`, { id: id, email: profile.email })
     .then((res) => {
        // Update local state
        setblogs(prevBlogs => prevBlogs.map(blog => {

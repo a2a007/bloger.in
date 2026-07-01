@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from "../config";
 import { useContext} from 'react';
 import { blogcontext } from "../App.jsx";
 const paperstyle={
@@ -89,7 +90,7 @@ export function Blogger() {
   const [bookmarks, setBookmarks] = useState([]);
 
   useEffect(()=>{
-    axios.get('http://localhost:4002/api/blogger').then((res)=>{
+    axios.get(`${API_URL}/api/blogger`).then((res)=>{
       setdata(res.data)
     }).catch((err) => console.log(err));
   },[]);
@@ -142,7 +143,7 @@ export function Blogger() {
       file: editFile
     };
 
-    axios.put(`http://localhost:4002/api/updateblog/${editingBlog.id}`, updatedData)
+    axios.put(`${API_URL}/api/updateblog/${editingBlog.id}`, updatedData)
       .then((res) => {
         showAlert("Blog updated successfully!", "success");
         setdata(prevData => prevData.map(item => item.id === editingBlog.id ? res.data.blog : item));
@@ -207,7 +208,7 @@ console.log(data);
             <Button className='icon' onClick={() => handleEditClick(blog)}><EditIcon style={but}/></Button>
             <Button className='icon'  onClick={() => {
                 if(window.confirm("Are you sure you want to delete this blog?")) {
-                  axios.delete(`http://localhost:4002/api/deleteblog/${blog.id}`)
+                  axios.delete(`${API_URL}/api/deleteblog/${blog.id}`)
                     .then(() => {
                       showAlert("Blog Deleted Successfully", "success");
                       // Update local state to remove the deleted blog

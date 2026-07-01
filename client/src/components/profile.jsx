@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { blogcontext } from "../App.jsx";
 import axios from 'axios';
+import { API_URL } from "../config";
 import { Avatar, Button, Grid, Typography, Box, Tabs, Tab } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
@@ -87,7 +88,7 @@ export function Profile() {
     useEffect(() => {
         if (profile) {
             // Fetch Liked Posts
-            axios.get(`http://localhost:4002/api/liked-posts/${profile.email}`)
+            axios.get(`${API_URL}/api/liked-posts/${profile.email}`)
                 .then(res => {
                     console.log("Liked posts response:", res.data);
                     setLikedPosts(res.data);
@@ -96,7 +97,7 @@ export function Profile() {
 
             // Fetch My Posts (if Blogger)
             if (profile.role === 'Blogger') {
-                axios.get('http://localhost:4002/api/blogger')
+                axios.get(`${API_URL}/api/blogger`)
                     .then(res => {
                          const myBlogs = res.data.filter(blog => blog.email === profile.email);
                          setMyPosts(myBlogs);

@@ -3,6 +3,7 @@ import { Profile } from './components/profile.jsx';
 import { createContext,useEffect,useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Snackbar, Alert } from '@mui/material';
+import { API_URL } from './config';
 import { Route, Routes } from 'react-router-dom';
 import {Sign} from './components/sign.jsx';
 import { Allblogs} from './components/allblog.jsx';
@@ -65,7 +66,7 @@ function App() {
     setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
   useEffect(()=>{
-  axios.get('http://localhost:4002/api/nav').then((res)=>{
+  axios.get(`${API_URL}/api/nav`).then((res)=>{
     if (Array.isArray(res.data.data)){
     setcat(res.data.data)
     setblog(res.data.data)

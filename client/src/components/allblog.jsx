@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import { useContext} from 'react';
 import { blogcontext } from "../App.jsx";
+import { API_URL } from "../config";
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 
 const paperStyle={
@@ -72,7 +73,7 @@ export  function Allblogs() {
         showAlert("Please login to like!", "warning");
         return;
     }
-    axios.post('http://localhost:4002/api/like', { id: id, email: profile.email })
+    axios.post(`${API_URL}/api/like`, { id: id, email: profile.email })
     .then((res) => {
        // Update global context state
        setblog(prevBlogs => prevBlogs.map(b => {

@@ -9,6 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import PersonIcon from "@mui/icons-material/Person";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../config";
 const paperStyle = {
   height: "200px",
   width: "350",
@@ -80,7 +81,7 @@ export function Create() {
     {
       setError('');
        try {
-      const res = await axios.post("http://localhost:4002/api/newdata", data);
+      const res = await axios.post(`${API_URL}/api/newdata`, data);
       console.log("added data successfully");
       console.log(res.data);
       getresponse(res.data);

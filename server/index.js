@@ -2,6 +2,8 @@ const dns = require('dns');
 // Set DNS servers to Google and Cloudflare DNS to resolve SRV querySrv ECONNREFUSED issues
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 
+require('dotenv').config();
+
 const express=require('express')
 const cors=require('cors')
 const mongoose = require('mongoose');
@@ -11,7 +13,7 @@ app.use(cors());
 const multer = require('multer');
 const router = express.Router();
 
-const MONGO_URI = "mongodb+srv://adithya_a2a:adithya2244@cluster0.mjjldum.mongodb.net/demo?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI, {
     serverSelectionTimeoutMS: 15000,
@@ -61,7 +63,8 @@ router.delete('/deleteblog/:id', blog.deleteBlog);
 router.put('/updateblog/:id', update.updateBlog);
 app.use('/api',router);
 
-app.listen(4002, () => console.log('Running on host 4002'));
+const PORT = process.env.PORT || 4002;
+app.listen(PORT, () => console.log(`Running on host ${PORT}`));
 
 
 //newuserdata
