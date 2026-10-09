@@ -5,7 +5,7 @@ app.use(express.json());
 app.use(cors());
 const newblogmodel = require('../schema/newblog'); 
 const newusermodel = require('../schema/newuser');
-const config = require('../index.js');
+
 //  const multer = require('multer');
 
 // const path = require('path');

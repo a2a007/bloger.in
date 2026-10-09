@@ -2,9 +2,8 @@ const express=require('express')
 const cors=require('cors')
 const app=express();
 app.use(express.json());
-app.use(cors());
 const newblogmodel = require('../schema/newblog'); 
-const config = require('../index.js')
+
 const home={
     fetch:async (req,res)=>{
         try{
